@@ -22,16 +22,22 @@ class VisionAgent:
             "Ignore the background and focus entirely on the human's movement."
         )
         
+        # Send the image and prompt to the Gemini API
         try:
             response = self.client.models.generate_content(
                 model='gemini-2.5-flash',
+                # Pass the image and prompt to the API 
+                # types.Part.from_bytes is used to convert the image bytes to a format that the API can understand
                 contents=[
                     types.Part.from_bytes(data=image_bytes, mime_type='image/jpeg'),
                     system_prompt
                 ]
             )
+            # Return the AI's response
+            # .strip() removes any leading/trailing whitespace from the response
             return response.text.strip()
             
+        # Catch any errors from the API
         except Exception as e:
             print(f"Vision API Error: {e}")
             return "Error: Could not analyze the frame."
