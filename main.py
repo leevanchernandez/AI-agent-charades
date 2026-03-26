@@ -1,35 +1,36 @@
-import time
-# We will uncomment these as they get built
 from capture.frame_sampler import FrameSampler
-# from context.context_buffer import ContextBuffer
-# from agent.vision_agent import VisionAgent
-# from agent.guess_engine import GuessEngine
+from output.display import Display
 
 def runCharadesGame():
     print("Initializing Agent Charades...")
-    sampler = FrameSampler()
     
-    # Partner A can work on getting this dummy loop to process real vision data
-    # Partner B can work on hooking up the audio/UI outputs to this loop
+    sampler = FrameSampler()
+    ui = Display()
+    
+    # We will update this variable later when the AI makes real guesses
+    current_ai_guess = "Thinking..." 
     
     try:
         while True:
-            base64_frame = sampler.captureFrame()
-            if not base64_frame:
+            # Grab both the raw frame (for us) and the base64 (for the AI)
+            raw_frame, base64_frame = sampler.captureFrame()
+            
+            if raw_frame is None:
                 continue
-                
-            print("Frame captured! (Waiting for Vision/Guess modules...)")
             
-            # TODO: Add vision description logic here
-            # TODO: Add guess engine logic here
-            # TODO: Add UI/Voice output here
+            # Show the live video feed on the screen
+            # If showFrame returns False (meaning you pressed 'q'), break the loop
+            keep_running = ui.showFrame(raw_frame, current_ai_guess)
+            if not keep_running:
+                break
             
-            time.sleep(1) # Temporary rate limit
+            # (AI Logic will go here later)
             
     except KeyboardInterrupt:
         print("\nStopping game...")
     finally:
         sampler.releaseCamera()
+        ui.close()
         print("Clean shutdown complete.")
 
 if __name__ == "__main__":
