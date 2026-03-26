@@ -1,0 +1,29 @@
+# Python cache files (prevents weird execution bugs)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments (prevents uploading thousands of dependency files)
+.venv/
+venv/
+env/
+ENV/
+
+# Secrets and Configuration (CRITICAL: Keeps your Gemini API key safe)
+.env
+config.local.py
+
+# OS generated files
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Local test outputs (keeps your repo clean from our earlier test)
+test_capture.jpg
+*.jpg
+*.png
