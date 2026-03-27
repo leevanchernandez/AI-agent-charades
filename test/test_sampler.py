@@ -1,29 +1,28 @@
 import cv2
-import base64
-import numpy as np
+import sys
+import os
+
+# --- THE FIX ---
+# This forces Python to look in your main agent_charades folder for your modules
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from capture.frame_sampler import FrameSampler
 
 def testCamera():
     print("Initializing camera...")
-    # Initialize the sampler we just built
     sampler = FrameSampler()
     
     print("Capturing frame...")
-    b64_string = sampler.captureFrame()
+    # Unpack BOTH the raw OpenCV image and the text string
+    raw_frame, base64_string = sampler.captureFrame()
     
-    if b64_string:
-        print(f"Success! Captured base64 string of length: {len(b64_string)}")
+    # We check if raw_frame exists to make sure the webcam actually fired
+    if raw_frame is not None:
+        print(f"Success! Captured base64 string of length: {len(base64_string)}")
         
-        # Decode the base64 string back into raw bytes
-        img_data = base64.b64decode(b64_string)
-        
-        # Convert bytes to a numpy array, then to an OpenCV image
-        np_arr = np.frombuffer(img_data, np.uint8)
-        img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        
-        # Save it to disk so you can visually verify it
-        output_filename = "test_capture.jpg"
-        cv2.imwrite(output_filename, img)
+        # Save the raw frame directly to disk!
+        output_filename = "test_capture.jpg" # This will save inside the tests folder
+        cv2.imwrite(output_filename, raw_frame)
         print(f"Saved test frame to '{output_filename}'. Open your folder to check it out!")
     else:
         print("Failed to capture frame. Check if another app is using your webcam.")
