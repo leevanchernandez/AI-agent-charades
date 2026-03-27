@@ -1,13 +1,14 @@
 from capture.frame_sampler import FrameSampler
 from output.display import Display
 from agent.vision_agent import VisionAgent
-
+from capture.signal_detector import SignalDetector
 
 def runCharadesGame():
     print("Initializing Agent Charades...")
     
     sampler = FrameSampler()
     vision = VisionAgent()
+    signal_detector = SignalDetector()
     ui = Display()
     
     # We will update this variable later when the AI makes real guesses
@@ -28,7 +29,7 @@ def runCharadesGame():
                 break
             
             # (AI Logic will go here later)
-            mediapipe_result = vision.mediapipebodypose(raw_frame)
+            mediapipe_result = signal_detector.mediapipehandpose(raw_frame)
             current_ai_guess = f"AI sees: {mediapipe_result}"
     except KeyboardInterrupt:
         print("\nStopping game...")
