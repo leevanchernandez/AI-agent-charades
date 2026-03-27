@@ -43,6 +43,7 @@ def testLiveVision():
 
     while True:
         # We only need the raw_frame now, ignore the base64 string
+        # Just to see if we successfully recorded the video
         raw_frame, _ = sampler.captureFrame()
         
         if raw_frame is None:
@@ -51,12 +52,15 @@ def testLiveVision():
         # Initialize video writer once we have the first frame's dimensions
         if is_recording and video_writer is None:
             height, width, _ = raw_frame.shape
+            # parameters: filename, fourcc, fps, frame size
             video_writer = cv2.VideoWriter(video_filename, fourcc, 30.0, (width, height))
-            
+        
         if is_recording:
+            # Calculate elapsed time
             elapsed_time = time.time() - start_time
             if elapsed_time < 5.0:
                 # Write frame to the .mp4 file
+                # This is how we record the video
                 video_writer.write(raw_frame)
                 
                 # Draw a red recording indicator on the screen
