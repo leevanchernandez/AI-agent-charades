@@ -1,11 +1,13 @@
 import time
+import os
 from google import genai
 from config import GEMINI_API_KEY, VISION_MODEL
+
 
 class VisionAgent:
     def __init__(self):
         # We pass the safe key from config directly into the client here
-        # self.client = genai.Client(api_key=GEMINI_API_KEY) 
+        self.client = genai.Client(api_key=GEMINI_API_KEY) 
         self.media_pipe_model = os.path.join(os.path.dirname(__file__), "gesture_recognizer.task")
             
     
