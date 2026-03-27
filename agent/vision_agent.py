@@ -1,6 +1,6 @@
 import time
 from google import genai
-from config import GEMINI_API_KEY 
+from config import GEMINI_API_KEY, VISION_MODEL
 
 class VisionAgent:
     def __init__(self):
@@ -27,9 +27,9 @@ class VisionAgent:
                 "Do NOT explain your reasoning. Do NOT use punctuation."
             )
             
-            print("🚀 Asking Gemma 3 12B to guess the charade...")
+            print("🚀 Asking Gemma 3 27B to guess the charade...")
             response = self.client.models.generate_content(
-                model='gemma-3-27b', # Hardcoded to your massive 14k daily quota!
+                model=VISION_MODEL, 
                 contents=[video_file, system_prompt]
             )
             
