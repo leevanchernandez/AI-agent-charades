@@ -51,6 +51,8 @@ def testLiveVision():
         raw_frame, _ = sampler.captureFrame()
         if raw_frame is None:
             continue
+        
+        key = cv2.waitKey(1) & 0xFF
             
         gesture = signal_detector.mediapipehandpose(raw_frame)
         # Trigger a new recording round when you press 'r'
