@@ -28,7 +28,7 @@ def runCharadesGame():
                 break
             
             # (AI Logic will go here later)
-            mediapipe_result = vision.mediapipepose(raw_frame)
+            mediapipe_result = vision.mediapipebodypose(raw_frame)
             current_ai_guess = f"AI sees: {mediapipe_result}"
     except KeyboardInterrupt:
         print("\nStopping game...")
