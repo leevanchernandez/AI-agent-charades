@@ -9,3 +9,5 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 if not GEMINI_API_KEY:
     print("WARNING: Gemini API Key not found. Check your .env file!")
+    
+VISION_MODEL = "gemini-3-flash"
