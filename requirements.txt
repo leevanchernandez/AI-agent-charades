@@ -2,3 +2,4 @@ opencv-python
 numpy
 google-genai
 python-dotenv
+mediapipe
