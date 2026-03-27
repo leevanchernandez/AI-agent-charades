@@ -2,12 +2,45 @@ import base64
 from google import genai
 from google.genai import types
 # from config import GEMINI_API_KEY
+import mediapipe as mp
+import os
+
 class VisionAgent:
     def __init__(self):
         # We pass the safe key from config directly into the client here
         # self.client = genai.Client(api_key=GEMINI_API_KEY) 
-        pass
+        self.media_pipe_model = os.path.join(os.path.dirname(__file__), "gesture_recognizer.task")
 
+    def mediapipepose(self, livestream) -> str:
+        """Uses MediaPipe to analyze the player's pose and returns a description."""
+        BaseOptions = mp.tasks.BaseOptions
+        GestureRecognizer = mp.tasks.vision.GestureRecognizer
+        GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
+        GestureRecognizerResult = mp.tasks.vision.GestureRecognizerResult
+        VisionRunningMode = mp.tasks.vision.RunningMode
+        
+        # Set up the gesture recognizer options
+        options = GestureRecognizerOptions(
+            base_options=BaseOptions(model_asset_path=self.media_pipe_model),
+            running_mode=VisionRunningMode.IMAGE
+        )
+        
+        # Create the recognizer
+        with GestureRecognizer.create_from_options(options) as recognizer:
+            # Convert the OpenCV frame to MediaPipe Image
+            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=livestream)
+            
+            # Recognize gestures
+            result = recognizer.recognize(mp_image)
+            
+            # Check if any gestures were detected
+            if result.gestures:
+                # Get the top gesture (first in the list)
+                top_gesture = result.gestures[0][0]
+                return top_gesture.category_name
+            else:
+                return "No gesture detected"
+    
     # def describeFrame(self, base64_image: str) -> str:
     #     """Analyzes a frame and returns a text description of the player's action."""
         
