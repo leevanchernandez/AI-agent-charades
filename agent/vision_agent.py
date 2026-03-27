@@ -25,14 +25,24 @@ class VisionAgent:
                 
             # We combine the Vision and Guessing instructions into one brutal prompt
             system_prompt = (
-                "You are an expert at playing charades. Watch this short video "
-                "of a person pantomiming a word. Based ONLY on their continuous motions "
-                "and physical actions, guess what object, animal, or concept they are acting out. "
-                "Provide ONLY the final guess as a single word or short phrase. "
-                "Do NOT explain your reasoning. Do NOT use punctuation."
+                """
+                You are playing charades.
+
+                Your job is to infer the intended charade from a short video of a person acting without speech.
+
+                Rules:
+                - Focus on repeated body motions, hand actions, object mimicry, and interaction patterns.
+                - Ignore appearance, clothing, background, and identity.
+                - Infer the intended noun, verb, animal, object, or short concept being pantomimed.
+                - Prefer the simplest common answer over a rare or overly specific one.
+                - If multiple interpretations are possible, choose the one best supported by the motion pattern.
+                - Return only one answer.
+                - Output only the final guess as a short lowercase phrase.
+                - No explanation.
+                """
             )
             
-            print("🚀 Asking Gemma 3 27B to guess the charade...")
+            print(f"🚀 Asking {VISION_MODEL} to guess the charade...")
             response = self.client.models.generate_content(
                 model=VISION_MODEL, 
                 contents=[video_file, system_prompt]
